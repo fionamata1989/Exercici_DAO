@@ -1,0 +1,55 @@
+DELIMITER $$
+--
+-- Procedimientos
+--
+DROP PROCEDURE IF EXISTS `ACTUALITZA_EMPLEAT`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ACTUALITZA_EMPLEAT` (IN `empID` INT(11), IN `empNom` VARCHAR(40), IN `empCognom` VARCHAR(40), IN `empDataNaix` DATE, IN `empSalari` FLOAT)  MODIFIES SQL DATA
+BEGIN
+
+UPDATE employee 
+SET FIRSTNAME = empNom,
+ LASTNAME = empCognom,
+ BIRTHDATE = empDataNaix,
+ SALARY = empSalari
+WHERE ID = empID;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `ELIMINAR_EMPLEAT`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_EMPLEAT` (IN `empID` INT)  MODIFIES SQL DATA
+DELETE FROM employee
+WHERE ID = empID$$
+
+DROP PROCEDURE IF EXISTS `INSERIR_EMPLEAT`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `INSERIR_EMPLEAT` (IN `nouEmpleatID` INT(11), IN `nouEmplNom` VARCHAR(20), IN `nouEmplDataNaix` DATE, IN `nouEmplCognom` VARCHAR(25), IN `nouEmplSalari` DECIMAL(8,2))  INSERT INTO employee
+(
+    ID,
+	FIRSTNAME,
+    BIRTHDATE,
+	LASTNAME,
+	SALARY
+)
+
+VALUES (
+    nouEmpleatID,
+	nouEmplNom,
+    nouEmplDataNaix,
+	nouEmplCognom,
+	nouEmplSalari
+)$$
+
+DROP PROCEDURE IF EXISTS `OBTENIR_EMPLEATS`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OBTENIR_EMPLEATS` (OUT `empID` INT(11), OUT `empNom` VARCHAR(40), OUT `empCognom` VARCHAR(40), OUT `empNaix` DATE, OUT `empSalari` FLOAT, OUT `rowCount` INT(11))  READS SQL DATA
+BEGIN
+
+SELECT 
+ID AS empID,
+FIRSTNAME AS empNom,
+LASTNAME AS empCognom,
+BIRTHDATE AS empNaix,
+SALARY AS empSalari
+FROM employee;
+
+END$$
+
+DELIMITER ;
